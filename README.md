@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📅 Schedule Planner App
 
-## Getting Started
+![Schedule Planner](https://via.placeholder.com/1000x400.png?text=Schedule+Planner+App)
 
-First, run the development server:
+## 🚀 Overview
+The **Schedule Planner App** is designed to help students efficiently plan their semester schedules. It displays all available time slots and allows users to check for module conflicts and select available modules accordingly.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
+- 📌 View all available time slots for the semester
+- ✅ Check for conflicts between selected modules
+- 🔄 Select available modules without overlapping schedules
+- 🎯 User-friendly interface for seamless navigation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🖼 Screenshots
+### 📌 Dashboard
+![Dashboard](https://via.placeholder.com/800x400.png?text=Dashboard)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### ✅ Conflict Checker
+![Conflict Checker](https://via.placeholder.com/800x400.png?text=Conflict+Checker)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
+- **Frontend**: React.js
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **UI Design**: Tailwind CSS
 
-## Learn More
+## 📥 Installation
+1. Clone the repository: 
+   ```
+   git clone https://github.com/yourusername/schedule-planner.git
 
-To learn more about Next.js, take a look at the following resources:
+   ```
+2. Navigate to the project directory:
+   ```
+   cd schedule-planner
+   ```
+3. Install dependencies:
+   ```
+   npm install
+   ```
+4. Start the development server:
+   ``` 
+   npm run dev
+   ```
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the  Apache-2.0 license. See the LICENSE file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🌟 Contributions are welcome! Feel free to fork the repo and submit a pull request.
 
-## Deploy on Vercel
+📧 Need help? Open an issue or contact us at : thennakoonindudini@gmail.com
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
