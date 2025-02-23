@@ -58,25 +58,26 @@ const Timetable = () => {
   };
 
   return (
-    <Card className="w-full max-w-6xl">
+    <div className='flex justify-center bg-white p-5'>
+      <Card className="w-full max-w-6xl border-2">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Weekly Class Schedule</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center text-gray-900">Weekly Lectures Schedule</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
               <tr>
-                <th className="p-3 border bg-gray-50 font-semibold">Time / Day</th>
+                <th className="p-3 border bg-gray-50 font-semibold text-gray-900">Time / Day</th>
                 {days.map(day => (
-                  <th key={day} className="p-3 border bg-gray-50 font-semibold">{day}</th>
+                  <th key={day} className="p-3 border bg-gray-50 font-semibold text-gray-900">{day}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {timeSlots.map((timeSlot) => (
                 <tr key={timeSlot}>
-                  <td className="p-3 border bg-gray-50 font-medium">{timeSlot}</td>
+                  <td className="p-3 border bg-gray-50 font-medium text-gray-900">{timeSlot}</td>
                   {days.map(day => {
                     const classes = schedule[day]?.filter(c => 
                       c.time.startsWith(timeSlot.split(" - ")[0]) ||
@@ -89,7 +90,7 @@ const Timetable = () => {
                         {classes?.map((cls, idx) => (
                           <div 
                             key={idx}
-                            className={`${getSubjectColor(cls.subject)} p-2 rounded mb-1 last:mb-0`}
+                            className={`${getSubjectColor(cls.subject)} p-2 rounded mb-1 last:mb-0 text-gray-900`}
                           >
                             <div className="font-medium">{cls.subject}</div>
                             <div className="text-sm text-gray-600">{cls.location}</div>
@@ -106,6 +107,8 @@ const Timetable = () => {
         </div>
       </CardContent>
     </Card>
+    </div>
+    
   );
 };
 
