@@ -29,8 +29,8 @@ const ScheduleDecisionFlow = () => {
       { id: 'sun', time: 'Sun 12 PM - 2 PM', location: 'F304', conflicts: ['mtitL-1'] }
     ],
     SQAL: [
-      { id: 'sqaL-live', time: 'Sat 2 PM - 5 PM', location: 'G1402', type: 'Live Lecture', conflicts: ['mtitP-2'] },
-      { id: 'sqaL-recording', time: 'Flexible', location: 'Online', type: 'Recording', conflicts: [] }
+      { id: 'sqaL-live', time: 'Sat 2 PM - 5 PM', location: 'G1402', conflicts: ['mtitP-2'] },
+      { id: 'sqaL-recording', time: 'Flexible', location: 'Online',  conflicts: [] }
     ],
     MTITL: [
       { id: 'mtitL-1', time: 'Sun 11 AM - 2 PM', location: 'G1402', conflicts: ['sun', 'mtitP-3'] },
@@ -87,7 +87,7 @@ const ScheduleDecisionFlow = () => {
       >
         <div className="flex items-start justify-between mb-2">
           <div className="flex items-center space-x-2">
-            {option.type === 'Recording' ? (
+            {option.time === 'Flexible' ? (
               <Video className="h-4 w-4 text-gray-600" />
             ) : (
               <Clock className="h-4 w-4 text-gray-600" />
@@ -106,17 +106,24 @@ const ScheduleDecisionFlow = () => {
         )}
         {hasConflict && !isSelected && (
           <div className="mt-2 text-sm text-red-500 flex items-center">
-            <AlertCircle className="h-4 w-4 mr-1" />
-            <span>Has conflicts</span>
           </div>
         )}
+        {/* {option.id === 'sqaL-recording' && (
+          <p className="text-sm text-blue-800 mt-2">
+            <strong>Note:</strong> By choosing the recording option, you have more flexibility in scheduling other classes during the Saturday 2 PM - 5 PM slot.
+          </p>
+        )} */}
       </div>
     );
+    
   };
+
+
+  
 
   return (
     <div className='flex justify-center bg-white p-5'>
-      <Card className="w-full max-w-6xl">
+      <Card className="w-full max-w-6xl border-2">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center text-gray-900">Interactive Schedule Planner</CardTitle>
       </CardHeader>
@@ -126,25 +133,17 @@ const ScheduleDecisionFlow = () => {
           <h3 className="text-lg font-semibold mb-3 text-gray-900">Fixed Classes</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {fixedClasses.map((cls, idx) => (
-              <div key={idx} className="bg-blue-50 p-4 rounded-lg border  border-blue-100">
+              <div key={idx} className="bg-blue-50 p-4 rounded-lg border  border-blue-400">
                 <div className="flex items-center justify-between mb-2 ">
                   <span className="font-medium text-gray-900">{cls.subject}</span>
                   <span className="text-blue-600 text-sm">{cls.type}</span>
                 </div>
-                {/* make following same rowwo colomns */}
-
-
-               
-                  
-                
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <Clock className="h-4 w-4" />
                   <span>{cls.time}    </span> 
                   {/* <MapPin className="h-4 w-4" /> */}
                   <span>({ cls.location})</span>
                 </div>
-                
-                
               </div>
             ))}
           </div>
