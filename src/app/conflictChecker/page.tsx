@@ -1,134 +1,233 @@
 "use client"; 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Check, AlertCircle } from 'lucide-react';
+import { Check, X, AlertCircle, Clock, MapPin, Video } from 'lucide-react';
 
-const conflictChecker = () => {
-  const [selectedSlots, setSelectedSlots] = useState<Record<string, string>>({
-    'PPW (L)': 'Wed 6-8 (Online)',
-    'SQA (P)': '',
-    'CN (P)': 'Fri 6-8 (F1303/F1304)',
-    'MTIT (P)': '',
-    'MTIT (L)': '',
-    'SQA (L)': 'Sat 2-5 (G1402)'
+type SelectionsType = {
+  sqa: string;
+  sqaL: string;
+  mtitL: string;
+  mtitP: string;
+};
+
+const ScheduleDecisionFlow = () => {
+  const [selections, setSelections] = useState<SelectionsType>({
+    sqa: '',
+    sqaL: '',
+    mtitL: '',
+    mtitP: ''
   });
 
-  const subjectOptions: Record<string, string[]> = {
-    'PPW (L)': ['Wed 6-8 (Online)'],
-    'SQA (P)': ['Thu 6-8 (G605)', 'Sun 12-2 (F304)'],
-    'CN (P)': ['Fri 6-8 (F1303/F1304)'],
-    'MTIT (P)': [
-      'Sat 8-10 (B403)',
-      'Sat 2-4 (F304)',
-      'Sat 6-8 (G1303)',
-      'Sun 8-10 (B401)',
-      'Sun 10-12 (G1102)',
-      'Sun 2-4 (G1104)'
-    ],
-    'MTIT (L)': ['Sun 11-2 (G1402)', 'Sun 2-5 (G1402)'],
-    'SQA (L)': ['Sat 2-5 (G1402)']
-  };
+  const fixedClasses = [
+    { subject: 'PPW (L)', time: 'Wed 6-8', location: 'Online', type: 'Fixed' },
+    { subject: 'CN (P)', time: 'Fri 6-8', location: 'F1303/F1304', type: 'Fixed' }
+  ];
 
-  const timeToMinutes = (timeStr: string) => {
-    const [day, time]: [keyof typeof dayMap, string] = timeStr.split(' ') as [keyof typeof dayMap, string];
-    const [start, end] = time.split('-').map(t => parseInt(t));
-    const dayMap = {
-      'Mon': 0, 'Tue': 1, 'Wed': 2, 'Thu': 3, 'Fri': 4, 'Sat': 5, 'Sun': 6
-    };
-    return {
-      start: dayMap[day] * 24 * 60 + start * 60,
-      end: dayMap[day] * 24 * 60 + end * 60
-    };
-  };
+  const sqaOptions = [
+    { id: 'thu', time: 'Thu 6-8', location: 'G605', conflicts: [] },
+    { id: 'sun', time: 'Sun 12-2', location: 'F304', conflicts: ['mtitL-1'] }
+  ];
 
-  const hasConflict = (slot1: string, slot2: string) => {
-    if (!slot1 || !slot2) return false;
-    const time1 = timeToMinutes(slot1.split(' (')[0]);
-    const time2 = timeToMinutes(slot2.split(' (')[0]);
-    return !(time1.end <= time2.start || time2.end <= time1.start);
-  };
-
-  const checkConflicts = (subject: string, slot: string) => {
-    for (const [otherSubject, selectedSlot] of Object.entries(selectedSlots)) {
-      if (subject !== otherSubject && selectedSlot && hasConflict(slot, selectedSlot)) {
-        return otherSubject;
-      }
+  const sqaLectureOptions = [
+    { 
+      id: 'sqaL-live', 
+      time: 'Sat 2-5', 
+      location: 'G1402', 
+      type: 'Live Lecture',
+      conflicts: [] 
+    },
+    { 
+      id: 'sqaL-recording', 
+      time: 'Flexible', 
+      location: 'Online', 
+      type: 'Recording',
+      conflicts: [] 
     }
-    return null;
-  };
+  ];
 
-  const handleSlotSelect = (subject: string, slot: string) => {
-    setSelectedSlots(prev => ({
+  const mtitLOptions = [
+    { id: 'mtitL-1', time: 'Sun 11-2', location: 'G1402', conflicts: ['sun', 'mtitP-3'] },
+    { id: 'mtitL-2', time: 'Sun 2-5', location: 'G1402', conflicts: ['mtitP-6'] }
+  ];
+
+  const mtitPOptions = [
+    { id: 'mtitP-1', time: 'Sat 8-10', location: 'B403', conflicts: [] },
+    { id: 'mtitP-2', time: 'Sat 2-4', location: 'F304', conflicts: [] },
+    { id: 'mtitP-3', time: 'Sun 10-12', location: 'G1102', conflicts: ['mtitL-1'] },
+    { id: 'mtitP-4', time: 'Sun 8-10', location: 'B401', conflicts: [] },
+    { id: 'mtitP-5', time: 'Sat 6-8', location: 'G1303', conflicts: [] },
+    { id: 'mtitP-6', time: 'Sun 2-4', location: 'G1104', conflicts: ['mtitL-2'] }
+  ];
+
+  const handleSelect = (type: string, value: any) => {
+    setSelections(prev => ({
       ...prev,
-      [subject]: prev[subject] === slot ? '' : slot
+      [type]: prev[type as keyof SelectionsType] === value ? '' : value
     }));
   };
 
+  const isConflicting = (option: { conflicts: string | string[]; }, type: string) => {
+    if (type === 'sqa') {
+      return option.conflicts.includes(selections.mtitL);
+    } else if (type === 'mtitL') {
+      return option.conflicts.includes(selections.sqa) || 
+             option.conflicts.includes(selections.mtitP);
+    } else {
+      return option.conflicts.includes(selections.mtitL);
+    }
+  };
+
+  const renderTimeSlot = (option: any, type: 'sqa' | 'sqaL' | 'mtitL' | 'mtitP') => {
+    const isSelected = selections[type] === option.id;
+    const hasConflict = isConflicting(option, type);
+
+    return (
+      <div
+        key={option.id}
+        onClick={() => handleSelect(type, option.id)}
+        className={`
+          p-4 rounded-lg cursor-pointer transition-all
+          ${isSelected ? 'bg-green-100 border-2 border-green-500' : 
+            hasConflict ? 'bg-red-50 border-2 border-red-200' : 
+            'bg-gray-50 hover:bg-gray-100 border-2 border-gray-200'}
+        `}
+      >
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex items-center space-x-2">
+            {option.type === 'Recording' ? (
+              <Video className="h-4 w-4 text-gray-600" />
+            ) : (
+              <Clock className="h-4 w-4 text-gray-600" />
+            )}
+            <span className="font-medium">{option.time}</span>
+          </div>
+          {isSelected && <Check className="h-5 w-5 text-green-500" />}
+          {hasConflict && !isSelected && <X className="h-5 w-5 text-red-500" />}
+        </div>
+        <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <MapPin className="h-4 w-4" />
+          <span>{option.location}</span>
+        </div>
+        {option.type && (
+          <div className="mt-1 text-sm text-blue-600">
+            {option.type}
+          </div>
+        )}
+        {hasConflict && !isSelected && (
+          <div className="mt-2 text-sm text-red-500 flex items-center">
+            <AlertCircle className="h-4 w-4 mr-1" />
+            <span>Has conflicts</span>
+          </div>
+        )}
+        
+      </div>
+    );
+  };
+
   return (
-    <div className='flex justify-center bg-white p-5'>
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full max-w-6xl">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center text-gray-900">Schedule Optimizer</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center">Interactive Schedule Planner</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
-          {Object.entries(subjectOptions).map(([subject, slots]) => (
-            <div key={subject} className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold mb-3  text-gray-900">{subject}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3  text-gray-900">
-                {slots.map(slot => {
-                  const isSelected = selectedSlots[subject] === slot;
-                  const conflict = checkConflicts(subject, slot);
-                  
-                  return (
-                    <button
-                      key={slot}
-                      onClick={() => handleSlotSelect(subject, slot)}
-                      className={`p-3 rounded-md text-left relative  text-gray-900${
-                        isSelected 
-                          ? 'bg-green-100 border-2 border-green-500'
-                          : conflict
-                          ? 'bg-red-50 border-2 border-red-200'
-                          : 'bg-gray-50 border-2 border-gray-200 hover:bg-gray-100'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <span className="font-medium">{slot}</span>
-                        {isSelected && (
-                          <Check className="text-green-500 h-5 w-5" />
-                        )}
-                      </div>
-                      {conflict && !isSelected && (
-                        <div className="text-sm text-red-500 flex items-center mt-1">
-                          <AlertCircle className="h-4 w-4 mr-1" />
-                          Conflicts with {conflict}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-          <h3 className="text-lg font-semibold mb-3  text-gray-900">Selected Schedule</h3>
-          <div className="space-y-2">
-            {Object.entries(selectedSlots).map(([subject, slot]) => (
-              <div key={subject} className="flex justify-between">
-                <span className="font-medium  text-gray-900">{subject}:</span>
-                <span className={slot ? 'text-green-600' : 'text-red-500'}>
-                  {slot || 'Not selected'}
-                </span>
+        {/* Fixed Classes */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3">Fixed Classes</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {fixedClasses.map((cls, idx) => (
+              <div key={idx} className="bg-blue-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium">{cls.subject}</span>
+                  <span className="text-blue-600 text-sm">{cls.type}</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Clock className="h-4 w-4" />
+                  <span>{cls.time}</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm text-gray-600 mt-1">
+                  <MapPin className="h-4 w-4" />
+                  <span>{cls.location}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
+
+        {/* SQA Lecture */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3">Step 1: Choose SQA Lecture Option</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sqaLectureOptions.map(option => renderTimeSlot(option, 'sqaL'))}
+          </div>
+          {selections.sqaL === 'sqaL-recording' && (
+            <div className="mt-3 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> By choosing the recording option, you have more flexibility in scheduling other classes during the Saturday 2-5 slot.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* SQA Practical */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3">Step 2: Choose SQA Practical</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {sqaOptions.map(option => renderTimeSlot(option, 'sqa'))}
+          </div>
+        </div>
+
+        {/* MTIT Lecture */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3">Step 3: Choose MTIT Lecture</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {mtitLOptions.map(option => renderTimeSlot(option, 'mtitL'))}
+          </div>
+        </div>
+
+        {/* MTIT Practical */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3">Step 4: Choose MTIT Practical</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {mtitPOptions.map(option => renderTimeSlot(option, 'mtitP'))}
+          </div>
+        </div>
+
+        {/* Summary */}
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <h3 className="text-lg font-semibold mb-4">Your Selected Schedule</h3>
+          <div className="space-y-3">
+            {Object.entries(selections).map(([key, value]) => {
+              let options;
+              let title;
+              if (key === 'sqa') {
+                options = sqaOptions;
+                title = 'SQA Practical';
+              } else if (key === 'sqaL') {
+                options = sqaLectureOptions;
+                title = 'SQA Lecture';
+              } else if (key === 'mtitL') {
+                options = mtitLOptions;
+                title = 'MTIT Lecture';
+              } else {
+                options = mtitPOptions;
+                title = 'MTIT Practical';
+              }
+              const selected = options.find(opt => opt.id === value);
+              
+              return (
+                <div key={key} className="flex items-center justify-between">
+                  <span className="font-medium">{title}:</span>
+                  <span className={selected ? 'text-green-600' : 'text-red-500'}>
+                    {selected ? `${selected.time} (${selected.location})` : 'Not selected'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </CardContent>
     </Card>
-  </div>
   );
 };
 
-export default conflictChecker;
+export default ScheduleDecisionFlow;
