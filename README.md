@@ -5,10 +5,6 @@ The **Schedule Planner** is designed to help students efficiently plan their sem
 - Check for conflicts between selected modules and select available modules without overlapping schedules
 - User-friendly interface for seamless navigation
 
-## 🏷️ Tech Stack
-- **Frontend**: Next.js
-- **UI Design**: Tailwind CSS
-
 ## 🏷️ How to Contribute to the project
 1. Clone the repository: 
    ```
