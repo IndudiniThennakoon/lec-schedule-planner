@@ -5,15 +5,14 @@ The **Schedule Planner** is designed to help students efficiently plan their sem
 - Check for conflicts between selected modules and select available modules without overlapping schedules
 - User-friendly interface for seamless navigation
 
-## 🛠️ Tech Stack
+## 🏷️ Tech Stack
 - **Frontend**: Next.js
 - **UI Design**: Tailwind CSS
 
-## 📥 Installation
+## 🏷️ How to Contribute to the project
 1. Clone the repository: 
    ```
-   git clone https://github.com/yourusername/schedule-planner.git
-
+   git clone https://github.com/IndudiniThennakoon/lec-schedule-planner.git
    ```
 2. Navigate to the project directory:
    ```
@@ -27,13 +26,14 @@ The **Schedule Planner** is designed to help students efficiently plan their sem
    ``` 
    npm run dev
    ```
+
+## ⚖️ License
+
+This project is licensed under the  Apache-2.0 license. See the LICENSE file for details.
+
 🌟 Contributions are welcome! Feel free to fork the repo and submit a pull request.
 
 📧 Need help? Open an issue or contact us at : thennakoonindudini@gmail.com
-
-## 📄 License
-
-This project is licensed under the  Apache-2.0 license. See the LICENSE file for details.
 
 
 ___________     
