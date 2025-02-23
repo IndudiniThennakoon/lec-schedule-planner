@@ -20,7 +20,7 @@ const ScheduleDecisionFlow = () => {
 
   const fixedClasses = [
     { subject: 'PPW (L)', time: 'Wed 6 PM - 8 PM', location: 'Online', type: 'Fixed' },
-    { subject: 'CN (P)', time: 'Fri 6 PM - 8 PM', location: 'F1303 / F1304', type: 'Fixed' }
+    { subject: 'CN (P)', time: 'Fri 6 PM - 8 PM', location: 'F1303/4', type: 'Fixed' }
   ];
 
   const options = {
@@ -139,7 +139,7 @@ const ScheduleDecisionFlow = () => {
     <div className='flex justify-center bg-white p-5'>
       <Card className="w-full max-w-6xl border-2">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center text-gray-900">Interactive Schedule Planner</CardTitle>
+        <CardTitle className="text-2xl font-bold text-center text-gray-900">Schedule Planner</CardTitle>
       </CardHeader>
       <CardContent>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
