@@ -19,44 +19,32 @@ const ScheduleDecisionFlow = () => {
   });
 
   const fixedClasses = [
-    { subject: 'PPW (L)', time: 'Wed 6-8', location: 'Online', type: 'Fixed' },
-    { subject: 'CN (P)', time: 'Fri 6-8', location: 'F1303/F1304', type: 'Fixed' }
+    { subject: 'PPW (L)', time: 'Wed 6 PM - 8 PM', location: 'Online', type: 'Fixed' },
+    { subject: 'CN (P)', time: 'Fri 6 PM - 8 PM', location: 'F1303/F1304', type: 'Fixed' }
   ];
 
   const sqaOptions = [
-    { id: 'thu', time: 'Thu 6-8', location: 'G605', conflicts: [] },
-    { id: 'sun', time: 'Sun 12-2', location: 'F304', conflicts: ['mtitL-1'] }
+    { id: 'thu', time: 'Thu 6 PM - 8 PM', location: 'G605', conflicts: [] },
+    { id: 'sun', time: 'Sun 12 PM - 2 PM', location: 'F304', conflicts: ['mtitL-1'] }
   ];
 
   const sqaLectureOptions = [
-    { 
-      id: 'sqaL-live', 
-      time: 'Sat 2-5', 
-      location: 'G1402', 
-      type: 'Live Lecture',
-      conflicts: [] 
-    },
-    { 
-      id: 'sqaL-recording', 
-      time: 'Flexible', 
-      location: 'Online', 
-      type: 'Recording',
-      conflicts: [] 
-    }
+    { id: 'sqaL-live', time: 'Sat 2 PM - 5 PM', location: 'G1402',type: 'Live Lecture',conflicts: ['mtitP-2'] },
+    { id: 'sqaL-recording',time: 'Flexible',  location: 'Online',  type: 'Recording',conflicts: [] }
   ];
 
   const mtitLOptions = [
-    { id: 'mtitL-1', time: 'Sun 11-2', location: 'G1402', conflicts: ['sun', 'mtitP-3'] },
-    { id: 'mtitL-2', time: 'Sun 2-5', location: 'G1402', conflicts: ['mtitP-6'] }
+    { id: 'mtitL-1', time: 'Sun 11 AM - 2 PM', location: 'G1402', conflicts: ['sun', 'mtitP-3'] },
+    { id: 'mtitL-2', time: 'Sun 2 PM - 5 PM', location: 'G1402', conflicts: ['mtitP-6'] }
   ];
 
   const mtitPOptions = [
-    { id: 'mtitP-1', time: 'Sat 8-10', location: 'B403', conflicts: [] },
-    { id: 'mtitP-2', time: 'Sat 2-4', location: 'F304', conflicts: [] },
-    { id: 'mtitP-3', time: 'Sun 10-12', location: 'G1102', conflicts: ['mtitL-1'] },
-    { id: 'mtitP-4', time: 'Sun 8-10', location: 'B401', conflicts: [] },
-    { id: 'mtitP-5', time: 'Sat 6-8', location: 'G1303', conflicts: [] },
-    { id: 'mtitP-6', time: 'Sun 2-4', location: 'G1104', conflicts: ['mtitL-2'] }
+    { id: 'mtitP-1', time: 'Sat 8 AM - 10 AM', location: 'B403', conflicts: [] },
+    { id: 'mtitP-2', time: 'Sat 2 PM - 4 PM', location: 'F304', conflicts: ['sqaL-live'] },
+    { id: 'mtitP-3', time: 'Sun 10 AM - 12 PM', location: 'G1102', conflicts: ['mtitL-1'] },
+    { id: 'mtitP-4', time: 'Sun 8 AM - 10 AM', location: 'B401', conflicts: [] },
+    { id: 'mtitP-5', time: 'Sat 6 PM - 8 PM', location: 'G1303', conflicts: [] },
+    { id: 'mtitP-6', time: 'Sun 2 PM - 4 PM', location: 'G1104', conflicts: ['mtitL-2'] }
   ];
 
   const handleSelect = (type: string, value: any) => {
