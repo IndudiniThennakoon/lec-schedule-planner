@@ -1,5 +1,7 @@
+"use client"; 
 import React from 'react';
-import { Card, CardTitle, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardTitle, CardContent, CardHeader, Button } from '@/components/ui/card';
+import Link from 'next/link';
 
 const Timetable = () => {
   const timeSlots = [
@@ -60,9 +62,19 @@ const Timetable = () => {
   return (
     <div className='flex justify-center bg-white p-5'>
       <Card className="w-full max-w-6xl border-2">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center text-gray-900">Weekly Lectures Schedule</CardTitle>
-      </CardHeader>
+        <div>
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-center text-gray-900">Weekly Lectures Schedule</CardTitle>
+          </CardHeader>
+          <div className="flex justify-center mt-4">
+          <Link href="/conflictChecker" className="bg-blue-500 text-white px-6 py-2 rounded-lg text-center">
+            Check Conflicts
+          </Link>
+        </div>
+
+        </div>
+      
+
       <CardContent>
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
