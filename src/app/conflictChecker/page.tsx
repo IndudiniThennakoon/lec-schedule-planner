@@ -68,12 +68,26 @@ const ScheduleDecisionFlow = () => {
   };
   
 
+  const selectedSlots = fixedClasses.reduce((acc, cls) => {
+    acc[cls.subject] = `${cls.time} at ${cls.location}`;
+    return acc;
+  }, {} as Record<string, string>);
+  
+  Object.entries(selections).forEach(([key, value]) => {
+    if (value) {
+      const option = options[key as keyof SelectionsType].find(opt => opt.id === value);
+      if (option) {
+        selectedSlots[formatKey(key)] = `${option.time} at ${option.location}`;
+      }
+    }
+  });
+  
+
   const renderTimeSlot = (option: any, type: keyof SelectionsType) => {
     const isSelected = selections[type] === option.id;
     const hasConflict = Object.values(selections).some(selectedId =>
       selectedId && option.conflicts.includes(selectedId)
     );
-
     return (
       <div
         key={option.id}
@@ -128,9 +142,11 @@ const ScheduleDecisionFlow = () => {
         <CardTitle className="text-2xl font-bold text-center text-gray-900">Interactive Schedule Planner</CardTitle>
       </CardHeader>
       <CardContent>
-      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div  className="border border-gray-300 rounded-lg p-4 mb-8">
-          <h3 className="text-lg font-semibold mb-3 text-gray-900">Fixed Classes</h3>
+          <h3 className="text-lg font-semibold mb-3 text-gray-900">Fixed 
+            lectures
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {fixedClasses.map((cls, idx) => (
               <div key={idx} className="bg-blue-50 p-4 rounded-lg border  border-blue-400">
@@ -157,6 +173,21 @@ const ScheduleDecisionFlow = () => {
             </div>
           </div>
         ))}
+
+        <div className=" border border-gray-300 rounded-lg p-4 mb-8 bg-purple-100 ">
+          <h3 className="text-lg font-semibold mb-3 text-gray-900">Selected Schedule</h3>
+          <div className="space-y-2">
+            {Object.entries(selectedSlots).map(([subject, slot]) => (
+              <div key={subject} className="flex items-center justify-between">
+                <span className="font-medium text-gray-900">{subject}:</span>
+                <span className={slot ? 'text-blue-900' : 'text-red-500'}>
+                  {slot || 'Not selected'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        </div>
        
       </CardContent>
     </Card>
