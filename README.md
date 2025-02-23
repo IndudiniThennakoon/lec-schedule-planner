@@ -1,27 +1,12 @@
 # 📅 Schedule Planner App
 
-![Schedule Planner](https://via.placeholder.com/1000x400.png?text=Schedule+Planner+App)
-
-## 🚀 Overview
-The **Schedule Planner App** is designed to help students efficiently plan their semester schedules. It displays all available time slots and allows users to check for module conflicts and select available modules accordingly.
-
-## ✨ Features
-- 📌 View all available time slots for the semester
-- ✅ Check for conflicts between selected modules
-- 🔄 Select available modules without overlapping schedules
-- 🎯 User-friendly interface for seamless navigation
-
-## 🖼 Screenshots
-### 📌 Dashboard
-![Dashboard](https://via.placeholder.com/800x400.png?text=Dashboard)
-
-### ✅ Conflict Checker
-![Conflict Checker](https://via.placeholder.com/800x400.png?text=Conflict+Checker)
+The **Schedule Planner** is designed to help students efficiently plan their semester schedules. It displays all available time slots and allows users to check for module conflicts and select available modules accordingly.
+-  View all available time slots for the semester
+- Check for conflicts between selected modules and select available modules without overlapping schedules
+- User-friendly interface for seamless navigation
 
 ## 🛠️ Tech Stack
-- **Frontend**: React.js
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
+- **Frontend**: Next.js
 - **UI Design**: Tailwind CSS
 
 ## 📥 Installation
@@ -42,12 +27,17 @@ The **Schedule Planner App** is designed to help students efficiently plan their
    ``` 
    npm run dev
    ```
+🌟 Contributions are welcome! Feel free to fork the repo and submit a pull request.
+
+📧 Need help? Open an issue or contact us at : thennakoonindudini@gmail.com
+
 ## 📄 License
 
 This project is licensed under the  Apache-2.0 license. See the LICENSE file for details.
 
-🌟 Contributions are welcome! Feel free to fork the repo and submit a pull request.
 
-📧 Need help? Open an issue or contact us at : thennakoonindudini@gmail.com
+___________     
+<sub><sup>📌 *documented by @IndudiniThennakoon 2025* </sup></sub>
+
 
 
